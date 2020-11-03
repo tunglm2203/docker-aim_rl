@@ -41,12 +41,12 @@ Build the docker container via:
 
 ### Pull image (Recommend)
 You can pull image from our [Dockerhub](https://hub.docker.com/repository/docker/tungluu2203/aim_rl). 
-Note that, this image is setup with additional packages (Mujoco, RLBench, OpenAI gym,  required 
-libraries), that  may be different from Dockerfile, for clean image: 
+Note that, this image is setup with additional packages (Mujoco, RLBench, OpenAI gym, required 
+libraries, etc.), that might be different from Dockerfile. For *clean* image (recommend): 
 
     docker pull tungluu2203/aim_rl:clean
 
-For image with workspace (some RL packages in workspace):
+For image with *workspace* (not recommend):
 
     docker pull tungluu2203/aim_rl:with-env
 
