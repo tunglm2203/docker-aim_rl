@@ -69,12 +69,16 @@ ignore all default configuration):
     nvidia-docker run -d  -t --net=host --shm-size 256G --name CONTAINER \
         --mount type=bind,source=$HOME/workspace,target=/headless/workspace tungluu2203/aim_rl:clean
     
+After a container is launch, you can connect it via VNC or directly login into the container by:
+
+    docker exec -it CONTAINER bash
+
 To stop the container when done using it run:
 
     docker stop CONTAINER && docker rm CONTAINER
 
 When a directory is mounted into the container the xfce4 desktop settings
-will persist when the container is restarted.
+will persist when the container is restarted. 
 
 ## Connect & Control
 
