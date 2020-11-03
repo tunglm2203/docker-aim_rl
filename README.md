@@ -53,21 +53,27 @@ For image with workspace (some RL packages in workspace):
 ## Usage
 The vnc-server is exposed on port `5901` and vnc web access port `6901`. The
 option ```--net=host``` is used below, alternatively use
-```-p 5901:5901 -p 6901:6901```. It is possible to use the container as root,
-which is highly discouraged.
+```-p 5901:5901 -p 6901:6901```. To create a container from this image without mounting:
 
-    nvidia-docker run -d  -t --net=host --name container_name aim_rl   # as root DON'T DO THIS
+    nvidia-docker run -d  -t --net=host --name CONTAINER --shm-size 256G tungluu2203/aim_rl:clean
 
-Running as root is not recommended. A better approach is to run as a user with
-home directory mounted.
-
-    TDB
-
+To mount a directory from host into a directory inside container:
+    
+    nvidia-docker run -d  -t --net=host --shm-size 256G --name CONTAINER \
+        --mount type=bind,source=/path/from/host,target=/path/in/container tungluu2203/aim_rl:clean
+    
+For example, we want to mount `$HOME/workspace` from local host into `/headless/workspace` (Note: 
+you should not mount into `/headless`, since you might not source the original `.bashrc` file, it can 
+ignore all default configuration):
+     
+    nvidia-docker run -d  -t --net=host --shm-size 256G --name CONTAINER \
+        --mount type=bind,source=$HOME/workspace,target=/headless/workspace tungluu2203/aim_rl:clean
+    
 To stop the container when done using it run:
 
-    docker stop container_name && docker rm container_name
+    docker stop CONTAINER && docker rm CONTAINER
 
-When the home directory is mounted into the container the xfce4 desktop settings
+When a directory is mounted into the container the xfce4 desktop settings
 will persist when the container is restarted.
 
 ## Connect & Control
@@ -81,34 +87,15 @@ container is started like mentioned above, connect via one of these options:
 
 ## Tips
 
-### Override VNC environment variables
-The following VNC environment variables can be overwritten at the `docker run`
-phase to customize your desktop environment inside the container:
-* `VNC_COL_DEPTH`, default: `24`
-* `VNC_RESOLUTION`, default: `1600x900`
-* `VNC_PW`, default: `vncpassword`
+The vnc password, resolution, depth can be changed after the container is launched by editing 
+`.bashrc` file.
 
-The resolution can be changed after the container is launched via xrandr as well.
+##### 1) Example: Change the VNC password
+After a container is created, modify variable `VNC_PW` in ` `.bashrc` file. 
 
-#### 1) Example: Override the VNC password
-Overwrite the value of the environment variable `VNC_PW`. For example in
-the docker run command:
+##### 2) Example: Change the VNC resolution
+After a container is created, modify variable `VNC_RESOLUTION` in `.bashrc` file.
 
-    nvidia-docker run -d -t --name=container_name --net=host \
-      -u $(id -u):$(id -g) -e HOME=$HOME -e USER=$USER -v $HOME:$HOME \
-      -e VNC_PW=my-pw \
-      -w $HOME aim_rl
-
-#### 2) Example: Override the VNC resolution
-Overwrite the value of the environment variable `VNC_RESOLUTION`. For
-example in the docker run command:
-
-    nvidia-docker run -d -t --name=mydesk --net=host \
-      -u $(id -u):$(id -g) -e HOME=$HOME -e USER=$USER -v $HOME:$HOME \
-      -e VNC_RESOLUTION=800x600 \
-      -w $HOME ubuntu-vnc-xfce4
-
-Or use xrandr once inside the container VNC session.
 
 ## Credits
 ##### The Dockerfile is based on this [docker-headless-vnc-container](https://github.com/avolkov1/docker-headless-vnc-container)
