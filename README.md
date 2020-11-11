@@ -46,10 +46,6 @@ libraries, etc.), that might be different from Dockerfile. For *clean* image (re
 
     docker pull tungluu2203/aim_rl:clean
 
-For image with *workspace* (not recommend):
-
-    docker pull tungluu2203/aim_rl:with-env
-
 ## Usage
 The vnc-server is exposed on port `5901` and vnc web access port `6901`. The
 option ```--net=host``` is used below, alternatively use
