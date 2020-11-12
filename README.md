@@ -96,6 +96,9 @@ After a container is created, modify variable `VNC_PW` in ` `.bashrc` file.
 ##### 2) Example: Change the VNC resolution
 After a container is created, modify variable `VNC_RESOLUTION` in `.bashrc` file.
 
-
+After finish changing, restart container to update by:
+    
+    docker restart CONTAINER
+    
 ## Credits
 ##### The Dockerfile is based on this [docker-headless-vnc-container](https://github.com/avolkov1/docker-headless-vnc-container)
